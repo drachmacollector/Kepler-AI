@@ -1,6 +1,4 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
@@ -29,4 +27,16 @@ body {
 #root {
   width: 100%;
   height: 100%;
+}
+
+@theme {
+  --color-galaxy-900: #0a0a1a;
+  --color-galaxy-800: #1a1a2e;
+  --color-galaxy-700: #16213e;
+
+  --color-accent-cyan: #00ddeb;
+  --color-accent-pink: #ff00ff;
+  --color-accent-purple: #bd00ff;
+
+  --font-sans: Inter, system-ui, sans-serif;
 }
