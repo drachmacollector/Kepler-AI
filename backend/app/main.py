@@ -43,7 +43,7 @@ class PredictionRequest(BaseModel):
 
 
 app = FastAPI(
-    title="Stellar Analytics API",
+    title="Kepler AI API",
     version="1.0.0"
 )
 
@@ -51,7 +51,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
                 "http://localhost:5173",
-                "https://stellar-analytics.vercel.app/"
+                "https://kepler-ai-koi.vercel.app/"
                 ],  # For development only
     allow_credentials=True,
     allow_methods=["*"],
@@ -74,7 +74,7 @@ except Exception as e:
 
 @app.get("/")
 def root():
-    return {"message": "Stellar Analytics backend is running."}
+    return {"message": "Kepler AI backend is running."}
 
 
 @app.get("/health")
