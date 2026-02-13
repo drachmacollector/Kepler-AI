@@ -19,8 +19,23 @@ export const predict = async (
         // const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
         // await delay(800);
 
-        const response = await API_create.post<PredictionResponse>('/predict', payload);
-        return response.data;
+        const response = await API_create.post('/predict', payload);
+
+        // Transform backend response to match frontend PredictionResponse interface
+        const { classification, metadata } = response.data;
+        const probConfirmed = classification.probability;
+        const probFalsePositive = 1 - probConfirmed;
+
+        return {
+            label: classification.label,
+            probability: classification.probability,
+            probabilities: {
+                'CONFIRMED': probConfirmed,
+                'FALSE POSITIVE': probFalsePositive,
+                'CANDIDATE': 0 // Backend is binary class only
+            },
+            timestamp: metadata.timestamp
+        };
     } catch (error) {
         if (axios.isAxiosError(error)) {
             throw new Error(
