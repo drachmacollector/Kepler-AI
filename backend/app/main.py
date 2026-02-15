@@ -6,7 +6,6 @@ EXPECTED_FEATURES = [
     'koi_model_snr',
     'koi_num_transits',
     'koi_ror',
-    'koi_prad',
     'st_teff',
     'st_logg',
     'st_met',
