@@ -12,7 +12,7 @@ export const predict = async (
     try {
         const payload: PredictionRequest = {
             features,
-            tasks: ['classification'],
+            tasks: ['classification', 'regression'],
         };
 
         // Simulate slight delay for loading effect if response is instant
@@ -34,6 +34,7 @@ export const predict = async (
                 'FALSE POSITIVE': probFalsePositive,
                 'CANDIDATE': 0 // Backend is binary class only
             },
+            radius: response.data.regression?.predicted_koi_prad,
             timestamp: metadata.timestamp
         };
     } catch (error) {

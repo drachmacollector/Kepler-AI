@@ -45,5 +45,6 @@ export interface PredictionResponse {
     label: string;
     probability: number;
     probabilities: Record<string, number>;
+    radius?: number;
     timestamp: string;
 }

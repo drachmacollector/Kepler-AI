@@ -3,6 +3,17 @@ import { CheckCircle, XCircle, AlertCircle } from 'lucide-react';
 import { PredictionResponse } from '@/types/prediction';
 import clsx from 'clsx';
 import { VisualizationPanel } from '@/components/VisualizationPanel';
+import {
+    BarChart,
+    Bar,
+    XAxis,
+    YAxis,
+    CartesianGrid,
+    Tooltip,
+    ResponsiveContainer,
+    Cell,
+    LabelList
+} from 'recharts';
 
 interface ResultsPanelProps {
     result: PredictionResponse | null;
@@ -62,6 +73,58 @@ export const ResultsPanel = ({ result }: ResultsPanelProps) => {
                 <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-transparent via-white/20 to-transparent" />
                 <h3 className="text-sm font-medium text-slate-300 mb-4">Model Confidence Analysis</h3>
                 <VisualizationPanel result={result} />
+            </div>
+
+            <div className="bg-white/5 rounded-xl p-6 border border-white/5 relative overflow-hidden mt-6">
+                <div className="absolute top-0 left-0 w-1 h-full bg-linear-to-b from-transparent via-accent-cyan/20 to-transparent" />
+                <h3 className="text-sm font-medium text-slate-300 mb-4">Planet Radius Prediction</h3>
+
+                {isConfirmed && result.radius !== undefined ? (
+                    <div className="h-48 w-full">
+                        <ResponsiveContainer width="100%" height="100%">
+                            <BarChart
+                                layout="vertical"
+                                data={[
+                                    { name: 'Earth', value: 1.0, fill: '#3b82f6' },
+                                    { name: 'Planet', value: result.radius, fill: '#06b6d4' },
+                                ]}
+                                margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+                            >
+                                <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="rgba(255,255,255,0.1)" />
+                                <XAxis type="number" stroke="#94a3b8" fontSize={12} />
+                                <YAxis type="category" dataKey="name" stroke="#94a3b8" fontSize={12} width={60} />
+                                <Tooltip
+                                    cursor={{ fill: 'rgba(255,255,255,0.05)' }}
+                                    contentStyle={{
+                                        backgroundColor: 'rgba(15, 23, 42, 0.9)',
+                                        borderColor: 'rgba(255,255,255,0.1)',
+                                        backdropFilter: 'blur(8px)',
+                                        color: '#fff'
+                                    }}
+                                    formatter={(value: any) => [`${Number(value).toFixed(2)} R⊕`, 'Radius']}
+                                />
+                                <Bar dataKey="value" barSize={30} radius={[0, 4, 4, 0]}>
+                                    <LabelList dataKey="value" position="right" fill="#fff" formatter={(val: any) => `${Number(val).toFixed(2)} R⊕`} />
+                                    {
+                                        [
+                                            { name: 'Earth', value: 1.0, fill: '#3b82f6' },
+                                            { name: 'Planet', value: result.radius, fill: '#06b6d4' },
+                                        ].map((entry, index) => (
+                                            <Cell key={`cell-${index}`} fill={entry.fill} />
+                                        ))
+                                    }
+                                </Bar>
+                            </BarChart>
+                        </ResponsiveContainer>
+                        <p className="text-xs text-slate-500 mt-2 text-center">
+                            Predicted radius: <span className="text-accent-cyan font-mono">{result.radius.toFixed(2)}</span> Earth radii (R⊕)
+                        </p>
+                    </div>
+                ) : (
+                    <div className="h-24 flex items-center justify-center text-slate-500 text-sm italic border border-dashed border-white/10 rounded-lg">
+                        Radius prediction is meaningful only for confirmed exoplanets.
+                    </div>
+                )}
             </div>
 
             <div className="mt-auto items-end flex justify-between text-[10px] text-slate-600 font-mono">
