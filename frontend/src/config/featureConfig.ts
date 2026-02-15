@@ -29,15 +29,7 @@ export const featureConfig: FeatureConfig[] = [
         required: true,
         category: 'core',
     },
-    {
-        id: 'koi_prad',
-        label: 'Planetary Radius',
-        description: 'Radius of the planet in Earth radii',
-        min: 0,
-        max: 200,
-        required: true,
-        category: 'core',
-    },
+
     {
         id: 'koi_impact',
         label: 'Impact Parameter',

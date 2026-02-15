@@ -38,7 +38,7 @@ export const Dashboard = () => {
                             Kepler AI
                         </h1>
                         <p className="text-[10px] text-slate-400 font-medium tracking-wider uppercase">
-                            Exoplanet Classification System
+                            Exoplanet Classification & Prediction System
                         </p>
                     </div>
                 </div>
