@@ -71,6 +71,15 @@ except Exception as e:
     print(f"Error loading model: {e}")
     classification_model = None
 
+REGRESSION_MODEL_PATH = os.path.join(BASE_DIR, "models", "regression_pipeline.pkl")
+
+try:
+    regression_model = joblib.load(REGRESSION_MODEL_PATH)
+    print("Regression model loaded successfully.")
+except Exception as e:
+    print(f"Error loading regression model: {e}")
+    regression_model = None
+
 
 @app.get("/")
 def root():
@@ -80,8 +89,10 @@ def root():
 @app.get("/health")
 def health_check():
     return {
-        "model_loaded": classification_model is not None
+        "classification_model_loaded": classification_model is not None,
+        "regression_model_loaded": regression_model is not None
     }
+
 
 @app.post("/predict")
 def predict(request: PredictionRequest):
