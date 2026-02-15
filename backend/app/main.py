@@ -40,7 +40,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 class PredictionRequest(BaseModel):
     features: Dict[str, float]
-    tasks: List[str] = Field(default_factory=lambda: ["classification"])
+    tasks: List[str] = Field(default_factory=lambda: ["classification", "regression"])
 
 
 app = FastAPI(
