@@ -27,8 +27,9 @@ EXPECTED_FEATURES = [
 
 from fastapi import FastAPI
 import joblib
+import numpy as np
 import os
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from typing import Dict, List, Optional
 from datetime import datetime
 import pandas as pd
@@ -39,7 +40,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 class PredictionRequest(BaseModel):
     features: Dict[str, float]
-    tasks: Optional[List[str]] = ["classification"]
+    tasks: List[str] = Field(default_factory=lambda: ["classification"])
 
 
 app = FastAPI(
@@ -97,90 +98,62 @@ def health_check():
 @app.post("/predict")
 def predict(request: PredictionRequest):
 
-    if classification_model is None:
-        raise HTTPException(status_code=500, detail="Model not loaded.")
-
     # ---- Validate Required Features ----
     missing_features = [f for f in EXPECTED_FEATURES if f not in request.features]
     if missing_features:
         raise HTTPException(
             status_code=400,
-            detail={
-                "error": "Missing required features.",
-                "missing_features": missing_features
-            }
+            detail={"error": "Missing required features.", "missing_features": missing_features}
         )
 
-    # ---- Reject Unexpected Features ----
     extra_features = [f for f in request.features if f not in EXPECTED_FEATURES]
     if extra_features:
         raise HTTPException(
             status_code=400,
-            detail={
-                "error": "Unexpected features provided.",
-                "extra_features": extra_features
-            }
+            detail={"error": "Unexpected features provided.", "extra_features": extra_features}
         )
 
-    # ---- Create DataFrame ----
-    try:
-        input_df = pd.DataFrame([request.features])
-        input_df = input_df[EXPECTED_FEATURES]
-    except Exception as e:
-        raise HTTPException(status_code=400, detail=f"Invalid input structure: {str(e)}")
+    input_df = pd.DataFrame([request.features])[EXPECTED_FEATURES]
 
-    # ---- Run Classification ----
-    try:
+    classification_output = None
+    regression_output = None
+
+    # ---- Classification ----
+    if "classification" in request.tasks:
+        if classification_model is None:
+            raise HTTPException(500, "Classification model not loaded.")
+
         prediction = classification_model.predict(input_df)[0]
-        probability = classification_model.predict_proba(input_df)[0][1]
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Inference error: {str(e)}")
+        probability = classification_model.predict_proba(input_df)[0][
+            list(classification_model.classes_).index(1)
+        ]
 
-    label = "CONFIRMED" if prediction == 1 else "FALSE POSITIVE"
-
-    return {
-        "classification": {
-            "label": label,
+        classification_output = {
+            "label": "CONFIRMED" if prediction == 1 else "FALSE POSITIVE",
             "probability": float(probability)
-        },
-        "regression": None,
-        "metadata": {
-            "model_version": "classification_v1",
-            "timestamp": datetime.utcnow().isoformat()
-        }
-    }
-
-def predict(request: PredictionRequest):
-
-    if classification_model is None:
-        return {"error": "Model not loaded."}
-
-    # Validate feature presence
-    missing_features = [f for f in EXPECTED_FEATURES if f not in request.features]
-    if missing_features:
-        return {
-            "error": "Missing required features.",
-            "missing_features": missing_features
         }
 
-    # Create DataFrame with correct ordering
-    input_df = pd.DataFrame([request.features])
-    input_df = input_df[EXPECTED_FEATURES]
+    # ---- Regression ----
+    if "regression" in request.tasks:
+        if regression_model is None:
+            raise HTTPException(500, "Regression model not loaded.")
 
-    # Classification inference
-    prediction = classification_model.predict(input_df)[0]
-    probability = classification_model.predict_proba(input_df)[0][1]
+        reg_df = input_df.copy()
+        reg_df["sqrt_koi_depth"] = np.sqrt(reg_df["koi_depth"])
+        reg_df["koi_depth_x_st_radius"] = reg_df["koi_depth"] * reg_df["st_radius"]
+        reg_df["koi_period_x_st_radius"] = reg_df["koi_period"] * reg_df["st_radius"]
 
-    label = "CONFIRMED" if prediction == 1 else "FALSE POSITIVE"
+        predicted_radius = regression_model.predict(reg_df)[0]
+
+        regression_output = {
+            "predicted_koi_prad": float(predicted_radius)
+        }
 
     return {
-        "classification": {
-            "label": label,
-            "probability": float(probability)
-        },
-        "regression": None,
+        "classification": classification_output,
+        "regression": regression_output,
         "metadata": {
-            "model_version": "classification_v1",
+            "model_version": "v1_dual_model",
             "timestamp": datetime.utcnow().isoformat()
         }
     }
