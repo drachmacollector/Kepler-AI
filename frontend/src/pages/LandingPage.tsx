@@ -1,12 +1,10 @@
 import { motion } from 'framer-motion';
-import { ChevronRight, Activity, Ruler, ArrowRight } from 'lucide-react';
+import { Activity, Ruler, ArrowRight } from 'lucide-react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, Cell } from 'recharts';
+import { useNavigate } from 'react-router-dom';
 
-interface LandingPageProps {
-    onStart: () => void;
-}
-
-export const LandingPage = ({ onStart }: LandingPageProps) => {
+export const LandingPage = () => {
+    const navigate = useNavigate();
     const scrollToFeatures = () => {
         const featuresSection = document.getElementById('features');
         featuresSection?.scrollIntoView({ behavior: 'smooth' });
@@ -39,6 +37,16 @@ export const LandingPage = ({ onStart }: LandingPageProps) => {
                     <p className="text-lg md:text-2xl text-slate-300 font-light tracking-[0.5em] uppercase mb-12">
                         Predicting the Unknown
                     </p>
+                    <motion.button
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 1, duration: 0.8 }}
+                        onClick={() => navigate('/dashboard')}
+                        className="px-10 py-4 bg-white/5 hover:bg-white/10 border border-white/10 rounded-full backdrop-blur-md transition-all duration-300 flex items-center justify-center gap-3 mx-auto group cursor-pointer"
+                    >
+                        <span className="text-sm tracking-[0.2em] uppercase font-medium text-white">Predict</span>
+                        <ArrowRight className="w-4 h-4 text-accent-cyan group-hover:translate-x-1 transition-transform" />
+                    </motion.button>
                 </motion.div>
 
                 {/* Navigation */}
@@ -52,16 +60,6 @@ export const LandingPage = ({ onStart }: LandingPageProps) => {
                     <button className="hover:text-accent-cyan transition-colors duration-300">ABOUT</button>
                     <button onClick={scrollToFeatures} className="hover:text-accent-cyan transition-colors duration-300">MORE</button>
                 </motion.div>
-
-                <motion.button
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 1.5, duration: 0.8 }}
-                    onClick={onStart}
-                    className="absolute bottom-20 right-12 z-20 flex items-center gap-2 text-sm tracking-widest hover:text-accent-cyan transition-colors duration-300 group"
-                >
-                    NEXT <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                </motion.button>
             </div>
 
             {/* Features Section */}
@@ -177,7 +175,7 @@ export const LandingPage = ({ onStart }: LandingPageProps) => {
                                 Estimate planetary radius with precision to identify Earth-like candidates.
                             </p>
                             
-                            <button onClick={onStart} className="flex items-center gap-3 px-6 py-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg transition-all duration-300 group">
+                            <button onClick={() => navigate('/dashboard')} className="flex items-center gap-3 px-6 py-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg transition-all duration-300 group">
                                 <span className="uppercase tracking-widest text-sm text-white">Start Analysis</span>
                                 <ArrowRight className="w-4 h-4 text-accent-cyan group-hover:translate-x-1 transition-transform" />
                             </button>

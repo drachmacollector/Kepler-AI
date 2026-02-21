@@ -89,7 +89,7 @@ export const JsonInput = ({ value, onChange, onDirtyChange }: JsonInputProps) =>
                 </div>
             </div>
 
-            <div className="relative flex-1 min-h-[300px]">
+            <div className="relative flex-1 ">
                 <textarea
                     value={text}
                     onChange={(e) => handleTextChange(e.target.value)}

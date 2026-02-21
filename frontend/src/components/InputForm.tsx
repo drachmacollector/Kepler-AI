@@ -154,30 +154,55 @@ export const InputForm = ({ onSubmit, isLoading }: InputFormProps) => {
                 )}
             </div>
 
-            <div className="flex-none px-4 py-3 border-t border-white/10 bg-black/40 backdrop-blur-xl">
-                <button
-                    type="submit"
-                    disabled={isLoading || (inputMode === 'json' && isJsonDirty)}
-                    className="w-full flex items-center justify-center gap-2.5 py-3 px-6 rounded-xl font-semibold text-sm tracking-widest uppercase transition-all duration-300 active:scale-[0.98] disabled:opacity-40 disabled:cursor-not-allowed
-                        bg-gradient-to-r from-accent-cyan/90 to-blue-500/90 hover:from-accent-cyan hover:to-blue-500
-                        text-white shadow-[0_0_20px_rgba(6,182,212,0.25)] hover:shadow-[0_0_30px_rgba(6,182,212,0.4)]
-                        border border-white/10"
-                >
-                    {isLoading ? (
-                        <>
-                            <Loader2 className="w-4 h-4 animate-spin" />
-                            Analyzing...
-                        </>
-                    ) : inputMode === 'json' && isJsonDirty ? (
-                        'Apply Changes First'
-                    ) : (
-                        <>
-                            <Telescope className="w-4 h-4" />
-                            Analyze Candidate
-                        </>
-                    )}
-                </button>
-            </div>
+        <div className="flex-none px-4 py-3 border-t border-white/10 bg-black/40 backdrop-blur-xl">
+        <div className="relative group w-full">
+            <button
+            type="submit"
+            disabled={isLoading || (inputMode === 'json' && isJsonDirty)}
+            className="relative w-full inline-block p-px font-semibold text-white
+                bg-neutral-600 rounded-2xl shadow-2xl shadow-emerald-900
+                transition-all duration-300 ease-in-out
+                hover:scale-[1.02] active:scale-[0.98]
+                hover:shadow-emerald-600
+                disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+            >
+            {/* Gradient border glow */}
+            <span
+                className="absolute inset-0 rounded-2xl bg-gradient-to-r
+                from-emerald-500 via-cyan-500 to-sky-600
+                p-[2px] opacity-0 transition-opacity duration-500
+                group-hover:opacity-100"
+            />
+
+            {/* Inner button content */}
+            <span className="relative z-10 block w-full px-6 py-3 rounded-2xl bg-neutral-950">
+                <span className="relative z-10 flex items-center justify-center gap-2.5 text-sm tracking-widest uppercase">
+                
+                {isLoading ? (
+                    <>
+                    <Loader2 className="w-4 h-4 animate-spin transition-all duration-500 group-hover:text-emerald-300" />
+                    <span className="transition-all duration-500 group-hover:translate-x-1 group-hover:text-emerald-300">
+                        Analyzing...
+                    </span>
+                    </>
+                ) : inputMode === 'json' && isJsonDirty ? (
+                    <span className="transition-all duration-500 group-hover:text-emerald-300">
+                    Apply Changes First
+                    </span>
+                ) : (
+                    <>
+                    <Telescope className="w-4 h-4 transition-all duration-500 group-hover:translate-x-1 group-hover:text-emerald-300" />
+                    <span className="transition-all duration-500 group-hover:translate-x-1 group-hover:text-emerald-300">
+                        Analyze Candidate
+                    </span>
+                    </>
+                )}
+
+                </span>
+            </span>
+            </button>
+        </div>
+        </div>
         </form>
     );
 };
