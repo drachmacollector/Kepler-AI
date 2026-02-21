@@ -21,12 +21,12 @@ interface ResultsPanelProps {
 export const ResultsPanel = ({ result }: ResultsPanelProps) => {
     if (!result) {
         return (
-            <div className="flex flex-col items-center justify-center text-slate-500 p-16 text-center bg-black/20 backdrop-blur-md rounded-2xl border border-white/5 min-h-[400px]">
+            <div className="flex flex-col items-center justify-center text-slate-500 p-16 text-center bg-black/20  rounded-2xl border border-white/5 min-h-[400px]">
                 <div className="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center mb-4">
-                    <AlertCircle className="w-8 h-8 opacity-50" />
+                    <AlertCircle className="w-8 h-8 opacity-90" />
                 </div>
-                <h3 className="text-lg font-medium text-slate-300">Awaiting Analysis</h3>
-                <p className="text-sm mt-2 max-w-xs">Enter stellar parameters and submit to classify the exoplanet candidate.</p>
+                <h3 className="text-lg font-medium text-slate-200">Awaiting Analysis</h3>
+                <p className="text-sm mt-2 max-w-xs">Enter stellar parameters & submit to classify the exoplanet candidate & predict radius.</p>
             </div>
         );
     }
@@ -126,7 +126,7 @@ export const ResultsPanel = ({ result }: ResultsPanelProps) => {
                                     <span className="text-xs text-accent-cyan font-mono font-bold">{result.radius.toFixed(2)} R⊕</span>
                                 </div>
                             </div>
-                            <p className="text-xs text-slate-500 mt-2 text-center max-w-sm">
+                            <p className="text-s text-slate-400 mt-2 text-center max-w-m">
                                 The candidate planet is approximately <span className="text-white font-medium">{result.radius.toFixed(1)}x</span> the size of Earth.
                             </p>
                         </div>

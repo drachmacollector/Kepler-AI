@@ -115,7 +115,7 @@ export const InputForm = ({ onSubmit, isLoading }: InputFormProps) => {
                     <>
                         {/* ── Planet Features ── */}
                         <div className="space-y-4">
-                            <h3 className="text-sm font-semibold text-slate-300 flex items-center gap-2 uppercase tracking-wider">
+                            <h3 className="text-sm font-semibold text-slate-100 flex items-center gap-2 uppercase tracking-wider">
                                 <Globe className="w-4 h-4 text-accent-cyan" />
                                 Planet Features
                             </h3>
@@ -134,7 +134,7 @@ export const InputForm = ({ onSubmit, isLoading }: InputFormProps) => {
 
                         {/* ── Stellar Features ── */}
                         <div className="space-y-4 border-t border-white/5 pt-6">
-                            <h3 className="text-sm font-semibold text-slate-300 flex items-center gap-2 uppercase tracking-wider">
+                            <h3 className="text-sm font-semibold text-slate-100 flex items-center gap-2 uppercase tracking-wider">
                                 <Star className="w-4 h-4 text-yellow-400" />
                                 Stellar Features
                             </h3>
@@ -186,7 +186,7 @@ export const InputForm = ({ onSubmit, isLoading }: InputFormProps) => {
                     </span>
                     </>
                 ) : inputMode === 'json' && isJsonDirty ? (
-                    <span className="transition-all duration-500 group-hover:text-emerald-300">
+                    <span className="transition-all duration-500 group-hover:text-emerald-300 cursor-pointer">
                     Apply Changes First
                     </span>
                 ) : (

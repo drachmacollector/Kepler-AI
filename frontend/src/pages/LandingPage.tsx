@@ -56,9 +56,7 @@ export const LandingPage = () => {
                     transition={{ delay: 1, duration: 1 }}
                     className="absolute bottom-20 z-20 flex gap-12 text-sm tracking-widest"
                 >
-                    <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="hover:text-accent-cyan transition-colors duration-300">HOME</button>
-                    <button className="hover:text-accent-cyan transition-colors duration-300">ABOUT</button>
-                    <button onClick={scrollToFeatures} className="hover:text-accent-cyan transition-colors duration-300">MORE</button>
+                    <button onClick={scrollToFeatures} className="hover:text-accent-cyan transition-colors duration-300">ABOUT</button>
                 </motion.div>
             </div>
 

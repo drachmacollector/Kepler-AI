@@ -132,7 +132,7 @@ export const JsonInput = ({ value, onChange, onDirtyChange }: JsonInputProps) =>
                             : "bg-white/5 text-slate-500 cursor-not-allowed border border-white/5"
                     )}
                 >
-                    <Check className="w-4 h-4" />
+                    <Check className="w-4 h-4 cursor-pointer" />
                     Apply Changes
                 </button>
             </div>
